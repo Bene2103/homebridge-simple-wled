@@ -31,6 +31,7 @@ export class WLED {
   private lightService: Service;
   private ambilightService!: Service;
   private speedService!: Service;
+  private intensityService!: Service;
   private effectsService!: Service;
 
   /*        LOGGING / DEBUGGING         */
@@ -43,6 +44,7 @@ export class WLED {
   private disableEffectSwitch: boolean;
   private turnOffWledWithEffect: boolean;
   private showEffectControl: boolean;
+  private showIntensityControl: boolean;
   private ambilightSwitch: boolean;
 
 
@@ -58,6 +60,7 @@ export class WLED {
   private colorArray = [255, 0, 0];
 
   private effectSpeed = 15;
+  private effectIntensity = 30;
 
   private effectsAreActive = false;
   private cachedAllEffects: Array<string> = [];
@@ -74,6 +77,7 @@ export class WLED {
     this.turnOffWledWithEffect = wledConfig.turnOffWledWithEffect || false;
     this.effectSpeed = wledConfig.defaultEffectSpeed || 15;
     this.showEffectControl = wledConfig.showEffectControl ? true : false;
+    this.showIntensityControl = wledConfig.showIntensityControl ? true : false;
     this.ambilightSwitch = wledConfig.ambilightSwitch ? true : false;
 
     this.cachedAllEffects = loadedEffects
@@ -107,6 +111,11 @@ export class WLED {
     if (this.showEffectControl) {
       this.speedService = this.wledAccessory.addService(this.api.hap.Service.Lightbulb, 'Effect Speed', 'SPEED');
       this.lightService.addLinkedService(this.speedService);
+    }
+
+    if (this.showEffectControl && this.showIntensityControl) {
+      this.speedService = this.wledAccessory.addService(this.api.hap.Service.Lightbulb, 'Effect Intensity', 'INTENSITY');
+      this.lightService.addLinkedService(this.intensityService);
     }
 
     if (this.ambilightSwitch) {
@@ -221,6 +230,25 @@ export class WLED {
             this.log("Speed set to " + this.effectSpeed);
 
           this.effectsService.setCharacteristic(this.Characteristic.ActiveIdentifier, this.lastPlayedEffect);
+
+          callback();
+        });
+    }
+
+    if (this.showEffectControl && this.showIntensityControl) {
+      // EFFECT INTENSITY
+      this.intensityService.getCharacteristic(this.hap.Characteristic.Brightness)
+        .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
+          callback(undefined, Math.round(this.effectIntensity / 2.55));
+
+        }).on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
+
+          this.effectIntensity = value as number;
+          this.effectIntensity = Math.round(this.effectIntensity * 2.55);
+          if (this.prodLogging)
+            this.log("Speed set to " + this.effectIntensity);
+
+          this.intensityService.setCharacteristic(this.Characteristic.ActiveIdentifier, this.lastPlayedEffect);
 
           callback();
         });
