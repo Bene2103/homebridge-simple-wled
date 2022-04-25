@@ -439,7 +439,7 @@ class WLED {
                 if (that.debug)
                     that.log(error);
                 that.log("Error while polling WLED " + that.name + " (" + that.host + ")");
-                that.log("response" + response);
+                that.log("response " + response["data"]["seg"]["ix"]);
                 that.isOffline = true;
                 return;
             }
