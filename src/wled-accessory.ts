@@ -252,7 +252,7 @@ export class WLED {
           if (this.prodLogging)
             this.log("Intensity set to " + this.effectIntensity);
 
-          this.intensityService.setCharacteristic(this.Characteristic.ActiveIdentifier, this.lastEffectIntesity);
+          this.intensityService.setCharacteristic(this.Characteristic.ActiveIntensity, this.lastEffectIntesity);
 
           callback();
         });

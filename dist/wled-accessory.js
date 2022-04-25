@@ -21,17 +21,21 @@ class WLED {
         this.saturation = 100;
         this.colorArray = [255, 0, 0];
         this.effectSpeed = 15;
+        this.effectIntensity = 30;
         this.effectsAreActive = false;
         this.cachedAllEffects = [];
         this.effects = [];
         this.lastPlayedEffect = 0;
+        this.lastEffectIntensity = 0;
         this.log = platform.log;
         this.name = wledConfig.name || 'WLED';
         this.prodLogging = wledConfig.log || false;
         this.disableEffectSwitch = (wledConfig.effects) ? false : true;
         this.turnOffWledWithEffect = wledConfig.turnOffWledWithEffect || false;
         this.effectSpeed = wledConfig.defaultEffectSpeed || 15;
+        this.effectIntensity = wledConfig.defaultEffectIntensity || 30;
         this.showEffectControl = wledConfig.showEffectControl ? true : false;
+        this.showEffectIntensity = wledConfig.showIntensityControl ? true : false;
         this.ambilightSwitch = wledConfig.ambilightSwitch ? true : false;
         this.cachedAllEffects = loadedEffects;
         if (wledConfig.host instanceof Array && wledConfig.host.length > 1) {
@@ -56,6 +60,10 @@ class WLED {
         if (this.showEffectControl) {
             this.speedService = this.wledAccessory.addService(this.api.hap.Service.Lightbulb, 'Effect Speed', 'SPEED');
             this.lightService.addLinkedService(this.speedService);
+        }
+        if (this.showEffectIntensity) {
+            this.intensityService = this.wledAccessory.addService(this.api.hap.Service.Lightbulb, 'Effect Intensity', 'INTENSITY');
+            this.lightService.addLinkedService(this.intensityService);
         }
         if (this.ambilightSwitch) {
             this.ambilightService = this.wledAccessory.addService(this.api.hap.Service.Lightbulb, 'Ambilight', 'AMBI');
@@ -151,6 +159,20 @@ class WLED {
                 callback();
             });
         }
+        if (this.showEffectIntensity) {
+            // EFFECT INTENSITY
+            this.intensityService.getCharacteristic(this.hap.Characteristic.Brightness)
+                .on("get" /* GET */, (callback) => {
+                callback(undefined, Math.round(this.effectIntensity / 2.55));
+            }).on("set" /* SET */, (value, callback) => {
+                this.effectIntensity = value;
+                this.effectIntensity = Math.round(this.effectSpeed * 2.55);
+                if (this.prodLogging)
+                    this.log("Speed set to " + this.effectIntensity);
+                this.intensityService.setCharacteristic(this.Characteristic.ActiveIntensity, this.lastEffectIntensity);
+                callback();
+            });
+        }
     }
     registerCharacteristicHue() {
         this.lightService.getCharacteristic(this.hap.Characteristic.Hue)
@@ -227,6 +249,21 @@ class WLED {
             callback(null);
         });
     }
+    registerCharacteristicActiveIntensity(): void {
+        this.effectsService.getCharacteristic(this.Characteristic.ActiveIntensity)
+          .on(CharacteristicEventTypes.SET, (newValue: CharacteristicValue, callback: CharacteristicSetCallback) => {
+            if (this.showIntensityControl) {
+              let effectIntensity = this.effectIntensity[parseInt(newValue.toString())];
+              this.host.forEach((host) => {
+                httpSendData(`http://${host}/json`, "POST", { "seg": [{ "ix": effectIntensity }] }, (error: any, resp: any) => { if (error) return; });
+              });
+              if (this.prodLogging)
+                this.log("Turned on " + newValue + " effect intensity!");
+              this.lastEffectIntesity = parseInt(newValue.toString());
+            }
+            callback(null);
+          });
+      }
     addEffectsInputSources(effects) {
         if (this.prodLogging) {
             this.log("Adding effects: " + effects);
