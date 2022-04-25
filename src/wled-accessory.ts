@@ -543,7 +543,7 @@ export class WLED {
         that.ambilightOn = !response["data"]["lor"];
         that.updateLight();
       }
-
+/*
       if (that.showIntensityControl && response["data"]["seg"]["ix"]) {
         that.effectIntensity = response["data"]["seg"]["ix"];
 
@@ -562,7 +562,7 @@ export class WLED {
         that.ambilightOn = !response["data"]["lor"];
         that.updateLight();
       }
-
+*/
     });
 
     status.on("error", function (error: any, response: any) {
