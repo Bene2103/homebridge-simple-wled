@@ -8,7 +8,7 @@ class WLED {
     /*  END LOCAL CACHING VARIABLES */
     constructor(platform, wledConfig, loadedEffects) {
         /*        LOGGING / DEBUGGING         */
-        this.debug = false;
+        this.debug = true;
         this.prodLogging = false;
         /*       END LOGGING / DEBUGGING      */
         this.effectId = 33;

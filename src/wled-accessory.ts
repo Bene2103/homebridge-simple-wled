@@ -35,7 +35,7 @@ export class WLED {
   private effectsService!: Service;
 
   /*        LOGGING / DEBUGGING         */
-  private readonly debug: boolean = false;
+  private readonly debug: boolean = true;
   private readonly prodLogging: boolean = false;
   /*       END LOGGING / DEBUGGING      */
 
