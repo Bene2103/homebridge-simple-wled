@@ -40,6 +40,7 @@ export class WLED {
   /*       END LOGGING / DEBUGGING      */
 
   private effectId = 33;
+  private effectIntensity = 30;
   private multipleHosts: boolean;
   private disableEffectSwitch: boolean;
   private turnOffWledWithEffect: boolean;
@@ -66,6 +67,7 @@ export class WLED {
   private cachedAllEffects: Array<string> = [];
   private effects: Array<number> = [];
   private lastPlayedEffect: number = 0;
+  private lastEffectIntesity: number = 0;
 
   /*  END LOCAL CACHING VARIABLES */
 
@@ -78,6 +80,7 @@ export class WLED {
     this.effectSpeed = wledConfig.defaultEffectSpeed || 15;
     this.showEffectControl = wledConfig.showEffectControl ? true : false;
     this.showIntensityControl = wledConfig.showIntensityControl ? true : false;
+    this.effectIntensity = wledConfig.defaultEffectIntensity || 30;
     this.ambilightSwitch = wledConfig.ambilightSwitch ? true : false;
 
     this.cachedAllEffects = loadedEffects
@@ -114,7 +117,7 @@ export class WLED {
     }
 
     if (this.showEffectControl && this.showIntensityControl) {
-      this.speedService = this.wledAccessory.addService(this.api.hap.Service.Lightbulb, 'Effect Intensity', 'INTENSITY');
+      this.intensityService = this.wledAccessory.addService(this.api.hap.Service.Lightbulb, 'Effect Intensity', 'INTENSITY');
       this.lightService.addLinkedService(this.intensityService);
     }
 
@@ -136,6 +139,7 @@ export class WLED {
 
       this.registerCharacteristicActive();
       this.registerCharacteristicActiveIdentifier();
+      this.registerCharacteristicActiveIntensity();
       this.addEffectsInputSources(wledConfig.effects);
     }
 
@@ -246,9 +250,9 @@ export class WLED {
           this.effectIntensity = value as number;
           this.effectIntensity = Math.round(this.effectIntensity * 2.55);
           if (this.prodLogging)
-            this.log("Speed set to " + this.effectIntensity);
+            this.log("Intensity set to " + this.effectIntensity);
 
-          this.intensityService.setCharacteristic(this.Characteristic.ActiveIdentifier, this.lastPlayedEffect);
+          this.intensityService.setCharacteristic(this.Characteristic.ActiveIdentifier, this.lastEffectIntesity);
 
           callback();
         });
@@ -318,6 +322,7 @@ export class WLED {
           }
           this.effectsAreActive = true;
           this.effectsService.setCharacteristic(this.Characteristic.ActiveIdentifier, this.lastPlayedEffect);
+          this.intensityService.setCharacteristic(this.Characteristic.ActiveIntensity, this.lastEffectIntesity)
         }
 
         this.effectsService.updateCharacteristic(this.Characteristic.Active, newValue);
@@ -339,6 +344,25 @@ export class WLED {
             this.log("Turned on " + newValue + " effect!");
 
           this.lastPlayedEffect = parseInt(newValue.toString());
+        }
+        callback(null);
+      });
+  }
+
+  registerCharacteristicActiveIntensity(): void {
+    this.effectsService.getCharacteristic(this.Characteristic.ActiveIntensity)
+      .on(CharacteristicEventTypes.SET, (newValue: CharacteristicValue, callback: CharacteristicSetCallback) => {
+
+        if (this.showIntensityControl) {
+
+          let effectIntensity = this.effectIntensity[parseInt(newValue.toString())];
+          this.host.forEach((host) => {
+            httpSendData(`http://${host}/json`, "POST", { "seg": [{ "ix": effectIntensity }] }, (error: any, resp: any) => { if (error) return; });
+          });
+          if (this.prodLogging)
+            this.log("Turned on " + newValue + " effect intensity!");
+
+          this.lastEffectIntesity = parseInt(newValue.toString());
         }
         callback(null);
       });
