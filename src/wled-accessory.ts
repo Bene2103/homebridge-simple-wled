@@ -116,7 +116,7 @@ export class WLED {
       this.lightService.addLinkedService(this.speedService);
     }
 
-    if (this.showEffectControl && this.showIntensityControl) {
+    if (this.showIntensityControl) {
       this.intensityService = this.wledAccessory.addService(this.api.hap.Service.Lightbulb, 'Effect Intensity', 'INTENSITY');
       this.lightService.addLinkedService(this.intensityService);
     }
@@ -239,7 +239,7 @@ export class WLED {
         });
     }
 
-    if (this.showEffectControl && this.showIntensityControl) {
+    if (this.showIntensityControl) {
       // EFFECT INTENSITY
       this.intensityService.getCharacteristic(this.hap.Characteristic.Brightness)
         .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
