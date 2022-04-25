@@ -166,7 +166,7 @@ class WLED {
                 callback(undefined, Math.round(this.effectIntensity / 2.55));
             }).on("set" /* SET */, (value, callback) => {
                 this.effectIntensity = value;
-                this.effectIntensity = Math.round(this.effectSpeed * 2.55);
+                this.effectIntensity = Math.round(this.effectIntensity * 2.55);
                 if (this.prodLogging)
                     this.log("Intensity set to " + this.effectIntensity);
                 this.intensityService.setCharacteristic(this.Characteristic.ActiveIdentifier, this.lastEffectIntensity);
