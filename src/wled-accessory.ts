@@ -139,7 +139,6 @@ export class WLED {
 
       this.registerCharacteristicActive();
       this.registerCharacteristicActiveIdentifier();
-      this.registerCharacteristicActiveIntensity();
       this.addEffectsInputSources(wledConfig.effects);
     }
 
@@ -512,27 +511,30 @@ export class WLED {
               that.log("Changed color to " + colorResponse + " on host " + host);
           })
         }
-        if (that.showIntensityControl && response["data"]["seg"]["ix"]) {
-          that.effectIntensity = response["data"]["seg"]["ix"];
-  
-          if (that.prodLogging)
-            that.log("Updating WLED in HomeKIT (Because of Polling) " + host)
-  
-          if (that.multipleHosts) {
-            that.host.forEach((host) => {
-              httpSendData(`http://${host}/json`, "POST", { "ix": that.effectIntensity }, (error: any, response: any) => { if (error) that.log("Error while polling WLED (brightness) " + that.name + " (" + that.host + ")"); });
-              if (that.prodLogging)
-                that.log("Changed color to " + colorResponse + " on host " + host);
-            })
-          }
-
         that.updateLight();
       } else {
         that.ambilightOn = !response["data"]["lor"];
         that.updateLight();
       }
 
+      if (that.showIntensityControl && response["data"]["seg"]["ix"]) {
+        that.effectIntensity = response["data"]["seg"]["ix"];
 
+        if (that.prodLogging)
+          that.log("Updating WLED in HomeKIT (Because of Polling) " + host)
+
+        if (that.multipleHosts) {
+          that.host.forEach((host) => {
+            httpSendData(`http://${host}/json`, "POST", { "ix": that.effectIntensity }, (error: any, response: any) => { if (error) that.log("Error while polling WLED (brightness) " + that.name + " (" + that.host + ")"); });
+            if (that.prodLogging)
+              that.log("Changed color to " + colorResponse + " on host " + host);
+          })
+        }
+        that.updateLight();
+      } else {
+        that.ambilightOn = !response["data"]["lor"];
+        that.updateLight();
+      }
 
     });
 
