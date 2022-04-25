@@ -559,7 +559,7 @@ export class WLED {
         }
         that.updateLight();
       } else {
-        that.ambilightOn = !response["data"]["lor"];
+        that.effectIntensity = response["data"]["seg"]["ix"];
         that.updateLight();
       }
 */
