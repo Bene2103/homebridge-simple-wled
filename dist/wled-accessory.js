@@ -354,6 +354,10 @@ class WLED {
         this.lightService.updateCharacteristic(this.hap.Characteristic.Brightness, this.currentBrightnessToPercent());
         this.lightService.updateCharacteristic(this.hap.Characteristic.Saturation, this.saturation);
         this.lightService.updateCharacteristic(this.hap.Characteristic.Hue, this.hue);
+        if (this.showEffectIntensity)
+            this.intensityService.updateCharacteristic(this.hap.Characteristic.ActiveIntensity, this.ActiveIntensity);
+        if (this.showEffectControl)
+            this.effectService.updateCharacteristic(this.hap.Characteristic.ActiveIdentifier, this.ActiveIdentifier);
         if (this.ambilightService)
             this.ambilightService.updateCharacteristic(this.hap.Characteristic.On, this.ambilightOn);
     }
@@ -398,6 +402,20 @@ class WLED {
                 if (that.multipleHosts) {
                     that.host.forEach((host) => {
                         (0, utils_1.httpSendData)(`http://${host}/json`, "POST", { "lor": that.ambilightOn }, (error, response) => { if (error)
+                            that.log("Error while polling WLED (brightness) " + that.name + " (" + that.host + ")"); });
+                        if (that.prodLogging)
+                            that.log("Changed color to " + colorResponse + " on host " + host);
+                    });
+                }
+                that.updateLight();
+            }
+            if (that.showEffectControl && response["data"]["seg"]["ix"]) {
+                that.effectIntensity = response["data"]["seg"]["ix"];
+                if (that.prodLogging)
+                    that.log("Updating WLED in HomeKIT (Because of Polling) " + host);
+                if (that.multipleHosts) {
+                    that.host.forEach((host) => {
+                        (0, utils_1.httpSendData)(`http://${host}/json`, "POST", { "ix": that.ActiveIntensity }, (error, response) => { if (error)
                             that.log("Error while polling WLED (brightness) " + that.name + " (" + that.host + ")"); });
                         if (that.prodLogging)
                             that.log("Changed color to " + colorResponse + " on host " + host);
