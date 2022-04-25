@@ -228,6 +228,8 @@ export class WLED {
       // EFFECT SPEED
       this.speedService.getCharacteristic(this.hap.Characteristic.Brightness)
         .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
+          if (this.debug)
+          this.log("Current Speed: " + this.effectSpeed);
           callback(undefined, Math.round(this.effectSpeed / 2.55));
 
         }).on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
