@@ -255,7 +255,7 @@ class WLED {
         });
     }
     registerCharacteristicActiveIntensity() {
-        this.intensityService.getCharacteristic(this.Characteristic.ActiveIdentifier)
+        this.intensityService.getCharacteristic(this.Characteristic.Brightness)
         .on("get" /* GET */, (callback) => {
             if (this.debug)
                 this.log("Current Intensity: " + this.effectIntensity + "%");
