@@ -475,8 +475,10 @@ export class WLED {
 
     if (this.ambilightService)
       this.ambilightService.updateCharacteristic(this.hap.Characteristic.On, this.ambilightOn);
+      /*
     if (this.showIntensityControl)
       this.intensityService.updateCharacteristic(this.hap.Characteristic.Brightness, this.effectIntensity)
+      */
   }
 
 

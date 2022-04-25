@@ -360,10 +360,12 @@ class WLED {
         this.lightService.updateCharacteristic(this.hap.Characteristic.Brightness, this.currentBrightnessToPercent());
         this.lightService.updateCharacteristic(this.hap.Characteristic.Saturation, this.saturation);
         this.lightService.updateCharacteristic(this.hap.Characteristic.Hue, this.hue);
+        /*
         if (this.showEffectIntensity)
             this.intensityService.updateCharacteristic(this.hap.Characteristic.ActiveIdentifier, this.ActiveIdentifier);
         if (this.showEffectControl)
             this.effectService.updateCharacteristic(this.hap.Characteristic.ActiveIdentifier, this.ActiveIdentifier);
+            */
         if (this.ambilightService)
             this.ambilightService.updateCharacteristic(this.hap.Characteristic.On, this.ambilightOn);
     }
