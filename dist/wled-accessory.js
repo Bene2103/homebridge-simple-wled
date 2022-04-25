@@ -235,7 +235,6 @@ class WLED {
     }
     registerCharacteristicActiveIdentifier() {
         this.effectsService.getCharacteristic(this.Characteristic.ActiveIdentifier)
-        this.intensityService.getCharacteristic(this.Characteristic.ActiveIdentifier)
             .on("set" /* SET */, (newValue, callback) => {
             if (this.effectsAreActive) {
                 let effectID = this.effects[parseInt(newValue.toString())];
