@@ -340,7 +340,7 @@ class WLED {
         this.lightService.updateCharacteristic(this.hap.Characteristic.Saturation, this.saturation);
         this.lightService.updateCharacteristic(this.hap.Characteristic.Hue, this.hue);
         if (this.showEffectIntensity)
-            this.intensityService.updateCharacteristic(this.hap.Characteristic.ActiveIntensity, this.ActiveIntensity);
+            this.intensityService.updateCharacteristic(this.hap.Characteristic.ActiveIdentifier, this.ActiveIdentifier);
         if (this.showEffectControl)
             this.effectService.updateCharacteristic(this.hap.Characteristic.ActiveIdentifier, this.ActiveIdentifier);
         if (this.ambilightService)
@@ -400,7 +400,7 @@ class WLED {
                     that.log("Updating WLED in HomeKIT (Because of Polling) " + host);
                 if (that.multipleHosts) {
                     that.host.forEach((host) => {
-                        (0, utils_1.httpSendData)(`http://${host}/json`, "POST", { "ix": that.ActiveIntensity }, (error, response) => { if (error)
+                        (0, utils_1.httpSendData)(`http://${host}/json`, "POST", { "ix": that.effectIntensity }, (error, response) => { if (error)
                             that.log("Error while polling WLED (brightness) " + that.name + " (" + that.host + ")"); });
                         if (that.prodLogging)
                             that.log("Changed color to " + colorResponse + " on host " + host);
