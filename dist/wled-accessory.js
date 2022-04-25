@@ -168,8 +168,8 @@ class WLED {
                 this.effectIntensity = value;
                 this.effectIntensity = Math.round(this.effectSpeed * 2.55);
                 if (this.prodLogging)
-                    this.log("Speed set to " + this.effectIntensity);
-                this.intensityService.setCharacteristic(this.Characteristic.ActiveIntensity, this.lastEffectIntensity);
+                    this.log("Intensity set to " + this.effectIntensity);
+                this.intensityService.setCharacteristic(this.Characteristic.ActiveIdentifier, this.lastEffectIntensity);
                 callback();
             });
         }
@@ -239,7 +239,7 @@ class WLED {
             if (this.effectsAreActive) {
                 let effectID = this.effects[parseInt(newValue.toString())];
                 this.host.forEach((host) => {
-                    (0, utils_1.httpSendData)(`http://${host}/json`, "POST", { "seg": [{ "fx": effectID, "sx": this.effectSpeed }] }, (error, resp) => { if (error)
+                    (0, utils_1.httpSendData)(`http://${host}/json`, "POST", { "seg": [{ "fx": effectID, "sx": this.effectSpeed, "ix": this.effectIntensity }] }, (error, resp) => { if (error)
                         return; });
                 });
                 if (this.prodLogging)
@@ -249,21 +249,6 @@ class WLED {
             callback(null);
         });
     }
-    registerCharacteristicActiveIntensity() {
-        this.effectsService.getCharacteristic(this.Characteristic.ActiveIntensity)
-            .on("set" /* SET */, (newValue, callback) => {
-            if (this.effectsAreActive) {
-                let effectIntensity = this.effectIntensity[parseInt(newValue.toString())];
-                this.host.forEach((host) => {
-                    (0, utils_1.httpSendData)(`http://${host}/json`, "POST", { "seg": [{ "ix": effectIntensity }] }, (error, resp) => { if (error)
-                        return; });
-                });
-                if (this.prodLogging)
-                    this.log("Turned on " + newValue + " effect intensity!");
-                this.lastEffectIntensity = parseInt(newValue.toString());
-            }
-            callback(null);
-        });
     }
     addEffectsInputSources(effects) {
         if (this.prodLogging) {
@@ -409,7 +394,7 @@ class WLED {
                 }
                 that.updateLight();
             }
-            if (that.showEffectControl && response["data"]["seg"]["ix"]) {
+            if (that.showIntensityControl && response["data"]["seg"]["ix"]) {
                 that.effectIntensity = response["data"]["seg"]["ix"];
                 if (that.prodLogging)
                     that.log("Updating WLED in HomeKIT (Because of Polling) " + host);
@@ -424,7 +409,7 @@ class WLED {
                 that.updateLight();
             }
             else {
-                that.ambilightOn = !response["data"]["lor"];
+                that.effectIntensity = response["data"]["seg"]["ix"];
                 that.updateLight();
             }
         });
