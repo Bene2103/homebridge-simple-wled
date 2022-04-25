@@ -66,6 +66,7 @@ export class WLED {
   private effectsAreActive = false;
   private cachedAllEffects: Array<string> = [];
   private effects: Array<number> = [];
+  private intensity: Array<number> = [];
   private lastPlayedEffect: number = 0;
   private lastEffectIntesity: number = 0;
 
@@ -139,6 +140,7 @@ export class WLED {
 
       this.registerCharacteristicActive();
       this.registerCharacteristicActiveIdentifier();
+      this.registerCharacteristicActiveIntensity();
       this.addEffectsInputSources(wledConfig.effects);
     }
 
@@ -337,12 +339,31 @@ export class WLED {
 
           let effectID = this.effects[parseInt(newValue.toString())];
           this.host.forEach((host) => {
-            httpSendData(`http://${host}/json`, "POST", { "seg": [{ "fx": effectID, "sx": this.effectSpeed, "ix": this.effectIntensity }] }, (error: any, resp: any) => { if (error) return; });
+            httpSendData(`http://${host}/json`, "POST", { "seg": [{ "fx": effectID, "sx": this.effectSpeed }] }, (error: any, resp: any) => { if (error) return; });
           });
           if (this.prodLogging)
             this.log("Turned on " + newValue + " effect!");
 
           this.lastPlayedEffect = parseInt(newValue.toString());
+        }
+        callback(null);
+      });
+  }
+
+  registerCharacteristicActiveIntensity(): void {
+    this.intensityService.getCharacteristic(this.Characteristic.ActiveIdentifier)
+      .on(CharacteristicEventTypes.SET, (newValue: CharacteristicValue, callback: CharacteristicSetCallback) => {
+
+        if (this.showIntensityControl) {
+
+          let effectIntensity = this.intensity[parseInt(newValue.toString())];
+          this.host.forEach((host) => {
+            httpSendData(`http://${host}/json`, "POST", { "seg": [{ "ix": this.effectIntensity }] }, (error: any, resp: any) => { if (error) return; });
+          });
+          if (this.prodLogging)
+            this.log("Effect Intensity now " + newValue + " !");
+
+          this.lastEffectIntesity = parseInt(newValue.toString());
         }
         callback(null);
       });
