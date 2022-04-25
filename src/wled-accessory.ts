@@ -331,6 +331,7 @@ export class WLED {
 
   registerCharacteristicActiveIdentifier(): void {
     this.effectsService.getCharacteristic(this.Characteristic.ActiveIdentifier)
+    this.intensityService.getCharacteristic(this.Characteristic.ActiveIdentifier)
       .on(CharacteristicEventTypes.SET, (newValue: CharacteristicValue, callback: CharacteristicSetCallback) => {
 
         if (this.effectsAreActive) {
@@ -347,7 +348,6 @@ export class WLED {
         callback(null);
       });
   }
-
 
   addEffectsInputSources(effects: any): void {
 
@@ -448,7 +448,7 @@ export class WLED {
 
     if (this.ambilightService)
       this.ambilightService.updateCharacteristic(this.hap.Characteristic.On, this.ambilightOn);
-    if (this.intensityService)
+    if (this.showIntensityControl)
       this.intensityService.updateCharacteristic(this.hap.Characteristic.Brightness, this.effectIntensity)
   }
 
