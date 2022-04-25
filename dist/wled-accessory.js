@@ -256,6 +256,11 @@ class WLED {
     }
     registerCharacteristicActiveIntensity() {
         this.intensityService.getCharacteristic(this.Characteristic.ActiveIdentifier)
+        .on("get" /* GET */, (callback) => {
+            if (this.debug)
+                this.log("Current Intensity: " + this.effectIntensity + "%");
+            callback(undefined, this.effectIntensity);
+        })
             .on("set" /* SET */, (newValue, callback) => {
             if (this.showEffectControl) {
                 let effectIntensity = this.intensity[parseInt(newValue.toString())];
