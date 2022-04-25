@@ -251,19 +251,20 @@ class WLED {
     }
     registerCharacteristicActiveIntensity() {
         this.effectsService.getCharacteristic(this.Characteristic.ActiveIntensity)
-          .on(CharacteristicEventTypes.SET, (newValue: CharacteristicValue, callback: CharacteristicSetCallback) => {
-            if (this.showIntensityControl) {
-              let effectIntensity = this.effectIntensity[parseInt(newValue.toString())];
-              this.host.forEach((host) => {
-                httpSendData(`http://${host}/json`, "POST", { "seg": [{ "ix": effectIntensity }] }, (error: any, resp: any) => { if (error) return; });
-              });
-              if (this.prodLogging)
-                this.log("Turned on " + newValue + " effect intensity!");
-              this.lastEffectIntesity = parseInt(newValue.toString());
+            .on("set" /* SET */, (newValue, callback) => {
+            if (this.effectsAreActive) {
+                let effectIntensity = this.effectIntensity[parseInt(newValue.toString())];
+                this.host.forEach((host) => {
+                    (0, utils_1.httpSendData)(`http://${host}/json`, "POST", { "seg": [{ "ix": effectIntensity }] }, (error, resp) => { if (error)
+                        return; });
+                });
+                if (this.prodLogging)
+                    this.log("Turned on " + newValue + " effect intensity!");
+                this.lastEffectIntensity = parseInt(newValue.toString());
             }
             callback(null);
-          });
-      }
+        });
+    }
     addEffectsInputSources(effects) {
         if (this.prodLogging) {
             this.log("Adding effects: " + effects);
