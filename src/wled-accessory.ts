@@ -247,6 +247,8 @@ export class WLED {
       // EFFECT INTENSITY
       this.intensityService.getCharacteristic(this.hap.Characteristic.Brightness)
         .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
+          if (this.debug)
+          this.log("Current Intensity: " + this.effectIntensity);
           callback(undefined, Math.round(this.effectIntensity / 2.55));
 
         }).on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
