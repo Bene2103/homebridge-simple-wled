@@ -249,7 +249,7 @@ class WLED {
             callback(null);
         });
     }
-    }
+    
     addEffectsInputSources(effects) {
         if (this.prodLogging) {
             this.log("Adding effects: " + effects);
