@@ -415,6 +415,10 @@ class WLED {
                 }
                 that.updateLight();
             }
+            else {
+                that.ambilightOn = !response["data"]["lor"];
+                that.updateLight();
+            }
             if (that.showIntensityControl && response["data"]["seg"]["ix"]) {
                 that.effectIntensity = response["data"]["seg"]["ix"];
                 if (that.prodLogging)
@@ -439,7 +443,6 @@ class WLED {
                 if (that.debug)
                     that.log(error);
                 that.log("Error while polling WLED " + that.name + " (" + that.host + ")");
-                that.log("response " + response["data"] );
                 that.isOffline = true;
                 return;
             }
