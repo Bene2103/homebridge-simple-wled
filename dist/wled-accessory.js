@@ -168,6 +168,7 @@ class WLED {
             // EFFECT INTENSITY
             this.intensityService.getCharacteristic(this.hap.Characteristic.Brightness)
                 .on("get" /* GET */, (callback) => {
+                this.log("Current intensity: " + this.effectIntensity);
                 callback(undefined, Math.round(this.effectIntensity / 2.55));
             }).on("set" /* SET */, (value, callback) => {
                 this.effectIntensity = value;
