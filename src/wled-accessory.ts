@@ -132,11 +132,11 @@ export class WLED {
     this.registerCharacteristicBrightness();
     this.registerCharacteristicSaturation();
     this.registerCharacteristicHue();
-/*
+
     if (this.showIntensityControl) {
       this.registerCharacteristicActiveIntensity();
     }
-*/
+
     if (!this.disableEffectSwitch) {
       // LOAD ALL EFFECTS FROM HOST
       this.effectsService = this.wledAccessory.addService(this.api.hap.Service.Television);
