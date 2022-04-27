@@ -260,7 +260,7 @@ export class WLED {
           if (this.prodLogging)
             this.log("Intensity set to " + this.effectIntensity);
 
-          this.intensityService.setCharacteristic(this.Characteristic.ActiveIdentifier, this.lastEffectIntesity);
+          this.intensityService.setCharacteristic(this.Characteristic.Brightness, this.lastEffectIntesity);
 
           callback();
         });
@@ -475,10 +475,10 @@ export class WLED {
 
     if (this.ambilightService)
       this.ambilightService.updateCharacteristic(this.hap.Characteristic.On, this.ambilightOn);
-      
+    /*  
     if (this.showIntensityControl)
       this.intensityService.updateCharacteristic(this.hap.Characteristic.Brightness, this.effectIntensity)
-      
+      */
   }
 
 
