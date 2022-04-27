@@ -428,8 +428,8 @@ class WLED {
                 that.updateLight();
             }
 
-            if (that.showIntensityControl && response["data"]["seg"][0]["ix"]) {
-                that.effectIntensity = response["data"]["seg"][0]["ix"];
+            if (that.showIntensityControl && response["data"]["seg"][0]["len"]) {
+                that.effectIntensity = response["data"]["seg"][0]["len"];
                 if (that.prodLogging)
                     that.log("Updating EffectIntensity in HomeKIT (Because of Polling) " + host);
                 if (that.multipleHosts) {
