@@ -330,7 +330,6 @@ export class WLED {
           }
           this.effectsAreActive = true;
           this.effectsService.setCharacteristic(this.Characteristic.ActiveIdentifier, this.lastPlayedEffect);
-          this.intensityService.setCharacteristic(this.Characteristic.ActiveIntensity, this.lastEffectIntesity)
         }
 
         this.effectsService.updateCharacteristic(this.Characteristic.Active, newValue);
@@ -372,6 +371,7 @@ export class WLED {
 
           this.lastEffectIntesity = parseInt(newValue.toString());
         }
+        this.intensityService.updateCharacteristic(this.Characteristic.Active, newValue)
         callback(null);
       });
   }
