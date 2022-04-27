@@ -250,7 +250,7 @@ export class WLED {
       this.intensityService.getCharacteristic(this.hap.Characteristic.Brightness)
         .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
           if (this.debug)
-          this.log("Current Intensity: " + this.effectIntensity);
+          //this.log("Current Intensity: " + this.effectIntensity);
           callback(undefined, Math.round(this.effectIntensity / 2.55));
 
         }).on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
@@ -260,7 +260,7 @@ export class WLED {
           if (this.prodLogging)
             this.log("Intensity set to " + this.effectIntensity);
 
-          this.intensityService.setCharacteristic(this.Characteristic.Brightness, this.lastEffectIntesity);
+          this.intensityService.setCharacteristic(this.Characteristic.Brightness, this.effectIntensity);
 
           callback();
         });
