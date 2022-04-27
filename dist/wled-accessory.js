@@ -429,7 +429,7 @@ class WLED {
                 that.updateLight();
             }
 
-            if (that.showIntensityControl && response["data"]["seg"][0]["ix"]) {
+            if (that.showEffectIntensity && response["data"]["seg"][0]["ix"]) {
                 that.effectIntensity = response["data"]["seg"][0]["ix"];
                 that.log("effect intensity " + that.effectIntensity + "log while polling");
                 if (that.prodLogging)
