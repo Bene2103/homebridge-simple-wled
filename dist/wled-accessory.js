@@ -381,7 +381,7 @@ class WLED {
             if (!that.isOffline)
                 (0, utils_1.httpSendData)(`http://${host}/json/state`, "GET", {}, (error, response) => {
                     done(error, response);
-                    that.log(response["data"]["seg"][0]);
+                    that.log(response["data"]["seg"][0]["ix"]);
                 });
             else
                 that.isOffline = false;
