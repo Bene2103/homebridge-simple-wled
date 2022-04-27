@@ -26,6 +26,7 @@ class WLED {
         this.cachedAllEffects = [];
         this.effects = [];
         this.intensity = [];
+        this.segrespons = '';
         this.lastPlayedEffect = 0;
         this.lastEffectIntensity = 0;
         this.log = platform.log;
@@ -381,7 +382,9 @@ class WLED {
             if (!that.isOffline)
                 (0, utils_1.httpSendData)(`http://${host}/json/state`, "GET", {}, (error, response) => {
                     done(error, response);
-                    that.log(response);
+                    /*that.log(response);*/
+                    that.segrespons = response["data"]["seg"][0];
+                    that.log(segrespons);
                 });
             else
                 that.isOffline = false;
