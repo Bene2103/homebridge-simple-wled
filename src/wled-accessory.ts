@@ -554,9 +554,9 @@ export class WLED {
 
         if (that.multipleHosts) {
           that.host.forEach((host) => {
-            httpSendData(`http://${host}/json`, "POST", { "seg": [{ "ix": this.effectIntensity }] }, (error: any, response: any) => { if (error) that.log("Error while polling WLED (brightness) " + that.name + " (" + that.host + ")"); });
+            httpSendData(`http://${host}/json`, "POST", { "seg": [{ "ix": that.effectIntensity }] }, (error: any, response: any) => { if (error) that.log("Error while polling WLED (brightness) " + that.name + " (" + that.host + ")"); });
             if (that.prodLogging)
-              that.log("Changed color to " + colorResponse + " on host " + host);
+              that.log("ts intensity" + that.effectIntensity + " on host " + host);
           })
         }
         that.updateLight();
