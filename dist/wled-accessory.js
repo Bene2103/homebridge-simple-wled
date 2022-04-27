@@ -430,13 +430,13 @@ class WLED {
             }
 
             if (that.showIntensityControl && response["data"]["seg"][0]["ix"]) {
-                that.effectIntensity = response["data"]["seg"][0]["ix"] / 2.55;
-                that.log(that.effectIntensity);
+                that.effectIntensity = response["data"]["seg"][0]["ix"];
+                that.log("effect intensity " + that.effectIntensity + "log while polling");
                 if (that.prodLogging)
                     that.log("Updating EffectIntensity in HomeKIT (Because of Polling) " + host);
                 if (that.multipleHosts) {
                     that.host.forEach((host) => {
-                        (0, utils_1.httpSendData)(`http://${host}/json`, "POST", { "seg": [{ "ix": this.effectIntensity }] }, (error, response) => { if (error)
+                        (0, utils_1.httpSendData)(`http://${host}/json`, "POST", { "seg": [{ "ix": that.effectIntensity }] }, (error, response) => { if (error)
                             that.log("Error while polling WLED (EffectIntensity) " + that.name + " (" + that.host + ")"); });
                         if (that.prodLogging)
                             that.log("Changed color to " + colorResponse + " on host " + host);
@@ -445,7 +445,7 @@ class WLED {
                 that.updateLight();
             }
             else {
-                that.effectIntensity = response["data"]["seg"]["ix"];
+                that.effectIntensity = response["data"]["seg"][0]["ix"];
                 that.updateLight();
             }
 
