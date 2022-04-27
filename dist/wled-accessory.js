@@ -172,8 +172,7 @@ class WLED {
             }).on("set" /* SET */, (value, callback) => {
                 this.effectIntensity = value;
                 this.effectIntensity = Math.round(this.effectIntensity * 2.55);
-                if (this.prodLogging)
-                    this.log("Intensity set to " + this.effectIntensity);
+                this.log("Intensity set to " + this.effectIntensity);
                 this.intensityService.setCharacteristic(this.Characteristic.Brightness, this.effectIntensity);
                 callback();
             });
@@ -365,9 +364,10 @@ class WLED {
         this.lightService.updateCharacteristic(this.hap.Characteristic.Brightness, this.currentBrightnessToPercent());
         this.lightService.updateCharacteristic(this.hap.Characteristic.Saturation, this.saturation);
         this.lightService.updateCharacteristic(this.hap.Characteristic.Hue, this.hue);
-        
+        /*
         if (this.showEffectIntensity)
-            this.intensityService.updateCharacteristic(this.hap.Characteristic.Brightness, 49);
+            this.intensityService.updateCharacteristic(this.hap.Characteristic.Brightness, this.effectIntensity);
+            */
             /*
         if (this.showEffectControl)
             this.effectService.updateCharacteristic(this.hap.Characteristic.ActiveIdentifier, this.ActiveIdentifier);

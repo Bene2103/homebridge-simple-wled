@@ -561,7 +561,7 @@ export class WLED {
         }
         that.updateLight();
       } else {
-        that.effectIntensity = response["data"]["seg"]["ix"];
+        that.effectIntensity = response["data"]["seg"][0]["ix"];
         that.updateLight();
       }
 
