@@ -367,7 +367,7 @@ class WLED {
         this.lightService.updateCharacteristic(this.hap.Characteristic.Hue, this.hue);
         
         if (this.showEffectIntensity)
-            this.intensityService.updateCharacteristic(this.hap.Characteristic.Brightness, this.effectIntensity);
+            this.intensityService.updateCharacteristic(this.hap.Characteristic.Brightness, 49);
             /*
         if (this.showEffectControl)
             this.effectService.updateCharacteristic(this.hap.Characteristic.ActiveIdentifier, this.ActiveIdentifier);
@@ -431,7 +431,7 @@ class WLED {
 
             if (that.showEffectIntensity && response["data"]["seg"][0]["ix"]) {
                 that.effectIntensity = response["data"]["seg"][0]["ix"];
-                that.log("effect intensity " + that.effectIntensity + "log while polling");
+                that.log("effect intensity " + that.effectIntensity + " log while polling");
                 if (that.prodLogging)
                     that.log("Updating EffectIntensity in HomeKIT (Because of Polling) " + host);
                 if (that.multipleHosts) {
