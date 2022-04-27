@@ -75,9 +75,10 @@ class WLED {
         this.registerCharacteristicBrightness();
         this.registerCharacteristicSaturation();
         this.registerCharacteristicHue();
-
+/*
         if (this.showEffectIntensity) {
             this.registerCharacteristicActiveIntensity();
+ */
         }
         if (!this.disableEffectSwitch) {
             // LOAD ALL EFFECTS FROM HOST
