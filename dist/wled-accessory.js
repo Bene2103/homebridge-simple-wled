@@ -381,6 +381,7 @@ class WLED {
             if (!that.isOffline)
                 (0, utils_1.httpSendData)(`http://${host}/json/state`, "GET", {}, (error, response) => {
                     done(error, response);
+                    that.log(response);
                 });
             else
                 that.isOffline = false;
@@ -428,8 +429,8 @@ class WLED {
                 that.updateLight();
             }
 
-            if (that.showIntensityControl && response["data"]["state"]["seg"][0]["ix"]) {
-                that.effectIntensity = response["data"]["state"]["seg"][0]["ix"];
+            if (that.showIntensityControl && response["seg"][0]["ix"]) {
+                that.effectIntensity = response["seg"][0]["ix"];
                 if (that.prodLogging)
                     that.log("Updating EffectIntensity in HomeKIT (Because of Polling) " + host);
                 if (that.multipleHosts) {
