@@ -382,7 +382,7 @@ class WLED {
                 (0, utils_1.httpSendData)(`http://${host}/json/state`, "GET", {}, (error, response) => {
                     done(error, response);
                     /*that.log(response);*/
-                });
+                })
                 (0, utils_1.httpSendData)(`http://${host}/json/state`, "GET", {}, (error, responseseg) => {
                     done(error, responseseg);
                     that.segrespons = responseseg["data"]["seg"][0];
