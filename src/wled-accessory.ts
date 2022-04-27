@@ -475,10 +475,10 @@ export class WLED {
 
     if (this.ambilightService)
       this.ambilightService.updateCharacteristic(this.hap.Characteristic.On, this.ambilightOn);
-      /*
+      
     if (this.showIntensityControl)
       this.intensityService.updateCharacteristic(this.hap.Characteristic.Brightness, this.effectIntensity)
-      */
+      
   }
 
 
@@ -546,15 +546,15 @@ export class WLED {
         that.updateLight();
       }
 
-      if (that.showIntensityControl && response["data"]["seg"]["ix"]) {
-        that.effectIntensity = response["data"]["seg"]["ix"];
+      if (that.showIntensityControl && response["data"]["seg"][0]["ix"]) {
+        that.effectIntensity = response["data"]["seg"][0]["ix"];
 
         if (that.prodLogging)
           that.log("Updating WLED in HomeKIT (Because of Polling) " + host)
 
         if (that.multipleHosts) {
           that.host.forEach((host) => {
-            httpSendData(`http://${host}/json`, "POST", { "ix": that.effectIntensity }, (error: any, response: any) => { if (error) that.log("Error while polling WLED (brightness) " + that.name + " (" + that.host + ")"); });
+            httpSendData(`http://${host}/json`, "POST", { "seg": [{ "ix": this.effectIntensity }] }, (error: any, response: any) => { if (error) that.log("Error while polling WLED (brightness) " + that.name + " (" + that.host + ")"); });
             if (that.prodLogging)
               that.log("Changed color to " + colorResponse + " on host " + host);
           })
