@@ -174,7 +174,7 @@ class WLED {
                 this.effectIntensity = Math.round(this.effectIntensity * 2.55);
                 if (this.prodLogging)
                     this.log("Intensity set to " + this.effectIntensity);
-                this.intensityService.setCharacteristic(this.Characteristic.ActiveIdentifier, this.lastEffectIntensity);
+                this.intensityService.setCharacteristic(this.Characteristic.Brightness, this.effectIntensity);
                 callback();
             });
         }
