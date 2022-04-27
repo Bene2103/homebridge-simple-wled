@@ -256,7 +256,7 @@ export class WLED {
         }).on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
 
           this.effectIntensity = value as number;
-          this.effectIntensity = Math.round(this.effectIntensity * 2.55);
+          this.effectIntensity = Math.round(this.effectIntensity);
           if (this.prodLogging)
             this.log("Intensity set to " + this.effectIntensity);
 
