@@ -358,7 +358,7 @@ export class WLED {
   }
 
   registerCharacteristicActiveIntensity(): void {
-    this.intensityService.getCharacteristic(this.Characteristic.ActiveIdentifier)
+    this.intensityService.getCharacteristic(this.Characteristic.Brightness)
       .on(CharacteristicEventTypes.SET, (newValue: CharacteristicValue, callback: CharacteristicSetCallback) => {
 
         if (this.showIntensityControl) {
