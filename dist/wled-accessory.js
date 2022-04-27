@@ -367,7 +367,7 @@ class WLED {
         this.lightService.updateCharacteristic(this.hap.Characteristic.Hue, this.hue);
         
         if (this.showEffectIntensity)
-            this.intensityService.updateCharacteristic(this.hap.Characteristic.Brightness, this.ActiveIdentifier);
+            this.intensityService.updateCharacteristic(this.hap.Characteristic.Brightness, this.effectIntensity);
             /*
         if (this.showEffectControl)
             this.effectService.updateCharacteristic(this.hap.Characteristic.ActiveIdentifier, this.ActiveIdentifier);
